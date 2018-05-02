@@ -1,0 +1,32 @@
+import java.sql.*;
+import javax.sql.*;
+
+class Main
+{
+    private static String username = "root";
+    private static String password = "psim";
+    private static String connectionString = "jdbc:mysql://35.157.105.34:3306/library";
+    private static Connection connection;
+    private static Statement command;
+    private static ResultSet data;
+
+    public static void main (String[] args) {
+        try {
+            connection = DriverManager.getConnection(connectionString, username, password);
+            command = connection.createStatement();
+            data = command.executeQuery("select title from books;");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (data.first()) {
+                    while (data.next()) {
+                        System.out.println("title = " + data.getString("title"));
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
